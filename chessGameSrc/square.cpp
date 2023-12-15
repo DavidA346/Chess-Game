@@ -20,14 +20,11 @@ Piece& Square::getPiece(){
 }
 
 void Square::setPiece(unique_ptr<Piece> p){
-   if (p) {
-      cout << "Setting piece to target square" << endl;
-   } else {
+   if (!p) {
       cout << "Received null piece in setPiece" << endl;
    }
       this->clearSquare();
       pieceType = std::move(p);
-
    }
 
 bool Square::isEmpty() {

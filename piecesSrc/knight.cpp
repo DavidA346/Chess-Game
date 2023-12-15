@@ -17,12 +17,6 @@ bool Knight::canMoveTo(int sourceX, int sourceY, int targetX, int targetY, const
         return false; // Not valid movement
     }
 
-    //Check if the target is not the same color
-    Piece* targetPiece = &board.getSquare(targetX, targetY).getPiece();
-    if (targetPiece != nullptr && targetPiece->getColor() == this->getColor()) {
-        return false;
-    }
-
    return true; // Path is clear, move is valid
 }
 

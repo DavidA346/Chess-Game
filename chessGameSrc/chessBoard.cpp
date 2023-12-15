@@ -29,30 +29,30 @@ Square& chessBoard::getSquare(int row, int col) const {
 void chessBoard::setupBoard(){
     //setup black side
     
-    board[0][0]->setPiece(std::make_unique<Rook>(Color::Black));
-    board[0][1]->setPiece(std::make_unique<Knight>(Color::Black));
-    board[0][2]->setPiece(std::make_unique<Bishop>(Color::Black));
-    board[0][3]->setPiece(std::make_unique<Queen>(Color::Black));
-    board[0][4]->setPiece(std::make_unique<King>(Color::Black));
-    board[0][5]->setPiece(std::make_unique<Bishop>(Color::Black));
-    board[0][6]->setPiece(std::make_unique<Knight>(Color::Black));
-    board[0][7]->setPiece(std::make_unique<Rook>(Color::Black));
+    board[0][0]->setPiece(make_unique<Rook>(Color::Black));
+    board[0][1]->setPiece(make_unique<Knight>(Color::Black));
+    board[0][2]->setPiece(make_unique<Bishop>(Color::Black));
+    board[0][3]->setPiece(make_unique<Queen>(Color::Black));
+    board[0][4]->setPiece(make_unique<King>(Color::Black));
+    board[0][5]->setPiece(make_unique<Bishop>(Color::Black));
+    board[0][6]->setPiece(make_unique<Knight>(Color::Black));
+    board[0][7]->setPiece(make_unique<Rook>(Color::Black));
 
     for (int i = 0; i < 8; ++i){
-        board[1][i]->setPiece(std::make_unique<Pawn>(Color::Black));
+        board[1][i]->setPiece(make_unique<Pawn>(Color::Black));
     }
 
     //setup white side
-    board[7][0]->setPiece(std::make_unique<Rook>(Color::White));
-    board[7][1]->setPiece(std::make_unique<Knight>(Color::White));
-    board[7][2]->setPiece(std::make_unique<Bishop>(Color::White));
-    board[7][3]->setPiece(std::make_unique<Queen>(Color::White));
-    board[7][4]->setPiece(std::make_unique<King>(Color::White));
-    board[7][5]->setPiece(std::make_unique<Bishop>(Color::White));
-    board[7][6]->setPiece(std::make_unique<Knight>(Color::White));
-    board[7][7]->setPiece(std::make_unique<Rook>(Color::White));
+    board[7][0]->setPiece(make_unique<Rook>(Color::White));
+    board[7][1]->setPiece(make_unique<Knight>(Color::White));
+    board[7][2]->setPiece(make_unique<Bishop>(Color::White));
+    board[7][3]->setPiece(make_unique<Queen>(Color::White));
+    board[7][4]->setPiece(make_unique<King>(Color::White));
+    board[7][5]->setPiece(make_unique<Bishop>(Color::White));
+    board[7][6]->setPiece(make_unique<Knight>(Color::White));
+    board[7][7]->setPiece(make_unique<Rook>(Color::White));
     for (int j = 0; j < 8; ++j){
-        board[6][j]->setPiece(std::make_unique<Pawn>(Color::White));
+        board[6][j]->setPiece(make_unique<Pawn>(Color::White));
     }
 }
 
@@ -77,11 +77,35 @@ void chessBoard::displayBoard(){
             }
 
            if (currPiece == nullptr){
-                cout << "x ";
+                cout << ". ";
                
            }
            else{
-               cout << currPiece->getSymbol() << " ";
+                if (currPiece->getSymbol() == "K") {
+                cout << "\u2654 "; // WHITE CHESS KING
+            } else if (currPiece->getSymbol() == "Q") {
+                cout << "\u2655 "; // WHITE CHESS QUEEN
+            } else if (currPiece->getSymbol() == "R") {
+                cout << "\u2656 "; // WHITE CHESS ROOK
+            } else if (currPiece->getSymbol() == "B") {
+                cout << "\u2657 "; // WHITE CHESS BISHOP
+            } else if (currPiece->getSymbol() == "N") {
+                cout << "\u2658 "; // WHITE CHESS KNIGHT
+            } else if (currPiece->getSymbol() == "P") {
+                cout << "\u2659 "; // WHITE CHESS PAWN
+            } else if (currPiece->getSymbol() == "k") {
+                cout << "\u265A "; // BLACK CHESS KING
+            } else if (currPiece->getSymbol() == "q") {
+                cout << "\u265B "; // BLACK CHESS QUEEN
+            } else if (currPiece->getSymbol() == "r") {
+                cout << "\u265C "; // BLACK CHESS ROOK
+            } else if (currPiece->getSymbol() == "b") {
+                cout << "\u265D "; // BLACK CHESS BISHOP
+            } else if (currPiece->getSymbol() == "n") {
+                cout << "\u265E "; // BLACK CHESS KNIGHT
+            } else if (currPiece->getSymbol() == "p") {
+                cout << "\u265F "; // BLACK CHESS PAWN
+            }
            }
        }
        cout << " " << 8 - i;
@@ -98,55 +122,64 @@ void chessBoard::displayBoard(){
 //    }
 }
 
-void chessBoard::displayBoardFromBlackSide(){
+void chessBoard::displayBoardFromBlackSide() {
+    // setupBoard();
     cout << endl;
-    cout << "   h g f e d c b a" << endl; // Reverse the order of columns
+    cout << "   h g f e d c b a" << endl;  // Flipped column labels
     cout << endl;
-    for (int i = 7; i >= 0; --i) { // Start from the last row
-        cout << i + 1 << "  "; // Row numbers
-        for (int j = 7; j >= 0; --j) { // Start from the last column
-            Square* currSquare = board[i][j].get();
-            Piece* currPiece;
-            if(currSquare->isEmpty() == true){
-                currPiece = nullptr;
-            }
-            else {
-                currPiece = &currSquare->getPiece();
-            }
-
-            if (currPiece != nullptr) {
-                cout << currPiece->getSymbol() << " ";
+    Square* currSquare;
+    Piece* currPiece;
+    for (int i = 7; i >= 0; --i) {  // Start from 7 (row 8) and go down to 0 (row 1)
+        cout << 8 - i << "  ";  // Print the reversed row number (8 to 1)
+        for (int j = 7; j >= 0; --j) {  // Start from 7 (column h) and go to 0 (column a)
+            currSquare = &this->getSquare(i, j);
+            if (currSquare->isEmpty()) {
+                cout << ". ";
             } else {
-                cout << "x ";
+                currPiece = &currSquare->getPiece();
+                if (currPiece->getSymbol() == "K") {
+                cout << "\u2654 "; // WHITE CHESS KING
+            } else if (currPiece->getSymbol() == "Q") {
+                cout << "\u2655 "; // WHITE CHESS QUEEN
+            } else if (currPiece->getSymbol() == "R") {
+                cout << "\u2656 "; // WHITE CHESS ROOK
+            } else if (currPiece->getSymbol() == "B") {
+                cout << "\u2657 "; // WHITE CHESS BISHOP
+            } else if (currPiece->getSymbol() == "N") {
+                cout << "\u2658 "; // WHITE CHESS KNIGHT
+            } else if (currPiece->getSymbol() == "P") {
+                cout << "\u2659 "; // WHITE CHESS PAWN
+            } else if (currPiece->getSymbol() == "k") {
+                cout << "\u265A "; // BLACK CHESS KING
+            } else if (currPiece->getSymbol() == "q") {
+                cout << "\u265B "; // BLACK CHESS QUEEN
+            } else if (currPiece->getSymbol() == "r") {
+                cout << "\u265C "; // BLACK CHESS ROOK
+            } else if (currPiece->getSymbol() == "b") {
+                cout << "\u265D "; // BLACK CHESS BISHOP
+            } else if (currPiece->getSymbol() == "n") {
+                cout << "\u265E "; // BLACK CHESS KNIGHT
+            } else if (currPiece->getSymbol() == "p") {
+                cout << "\u265F "; // BLACK CHESS PAWN
+            }
             }
         }
-        cout << " " << i + 1;
-        cout << endl;
+        cout << " " << 8 - i << endl;  // Print the reversed row number again (8 to 1)
     }
     cout << endl;
-    cout << "   h g f e d c b a" << endl; // Reverse the order of columns
+    cout << "   h g f e d c b a" << endl;  // Flipped column labels
     cout << endl;
 }
 
 void chessBoard::movePiece(int sourceX, int sourceY, int targetX, int targetY){
     unique_ptr<Piece> toMovePiece = this->getSquare(sourceX, sourceY).releasePiece();
-    if (toMovePiece) {
-    std::cout << "Piece moved from source square" << std::endl;
-} else {
-    std::cout << "No piece to move from source square" << std::endl;
-}
-    
-    this->getSquare(targetX, targetY).setPiece(std::move(toMovePiece));
-    
-    // this->getSquare(sourceX, sourceY).clearSquare();
-
-    // this->getSquare(targetX, targetY).setPiece(move(toMovePiece));
-
-    displayBoard();
+    this->getSquare(targetX, targetY).setPiece(move(toMovePiece));
+  
 }
 
 void chessBoard::capture(int sourceX, int sourceY, int targetX, int targetY){
-    //To implement
+    unique_ptr<Piece> toMovePiece = this->getSquare(sourceX, sourceY).releasePiece();
+    this->getSquare(targetX, targetY).setPiece(move(toMovePiece));
 }
 
 

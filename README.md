@@ -28,7 +28,7 @@ Key Features:
 - All inputs will validated.
 
 ## Create profile
-![image](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/57105334/cb3d4037-2504-483e-8a28-edcd59ac2f14)
+![image](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/57105334/e7678b79-f094-4033-9a46-ba14727394dd)
 - Here the user can make a profile. 
 - The console will validate to make sure the passwords match, the username does not already exist, etc.
 - Before a match, the console will also ask for the users to login using an existing profile. 
@@ -45,29 +45,34 @@ Key Features:
 ![IMG_0117](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/88258745/718ebf95-f786-4772-aeab-d52006fc5d8c)
 
 
-## Updated Class Diagram and SOLID Principles
+# Updated Class Diagram and SOLID Principles
 
 ### Revised Class Diagram
  ![Phase3UML](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/146981459/4cd6eaff-4242-4b31-b2a4-f7163a8ca2ef)
- There are a number of changes made to our UML as a reflection of the combination of feedback and implementation. The major change is the removal of the "PieceType" class. From feedback during our last meeting, we concluded was redundant and unnecessary. There are various minor additions and changes to the classes. The causes for the rest of these changes are ease of implementation, and oversights during the earlier phases before we started building our program. We have identified the key characteristics of each of our classes and how we want them to interact, so we have more functions and more accurate detail in this updated Class Diagram. To summarize our changes in a quantifiable way; the ChessBoard class should operate around the general rules of chess itself, while the individual piece types will have their own unique set of legal moves that operate within the bounds of the game as monitored in ChessBoard.
+ <br> There are a number of changes made to our UML as a reflection of the combination of feedback and implementation. The major change is the removal of the "PieceType" class. From feedback during our last meeting, we concluded was redundant and unnecessary. There are various minor additions and changes to the classes. The causes for the rest of these changes are ease of implementation, and oversights during the earlier phases before we started building our program. We have identified the key characteristics of each of our classes and how we want them to interact, so we have more functions and more accurate detail in this updated Class Diagram. To summarize our changes in a quantifiable way; the ChessBoard class should operate around the general rules of chess itself, while the individual piece types will have their own unique set of legal moves that operate within the bounds of the game as monitored in ChessBoard.
 
 ### SOLID Design Principles
  We redesigned our classes with the Open-Closed Principle in mind, because of the complexity of the chess game. This is evident in the Pieces class and the 6 types of pieces that inherit Pieces. Many different objects are dependent on this class but are unable to modify the Pieces classes. 
  Another principle we kept in mind was the Liskov Substitution Principle. This principle helped us stay focused when redesigning all the different pieces. Now all the subclass types of pieces will behave according to the Piece superclass. The changes made to the subclass pieces caused us to move functions around, creating a new idea and plan for the classes as stated above.
  The Interface Segregation Principle is one that does not impact our development very much but is very helpful to keep in mind. We understand chess very well, and the visual simplicity on the client side of the program is a theme we are trying to uphold.
  The Dependency Inversion Principle also helped with the redesign process of our class diagram. keeping abstractions and implementations separate is something we did not fully consider when making the original class diagram, which we worked out through feedback and changes during our coding process.
- 
- > ## Final deliverable
- > All group members will give a demo to the reader during lab time. ou should schedule your demo on Calendly with the same reader who took your second scrum meeting. The reader will check the demo and the project GitHub repository and ask a few questions to all the team members. 
- > Before the demo, you should do the following:
- > * Complete the sections below (i.e. Screenshots, Installation/Usage, Testing)
- > * Plan one more sprint (that you will not necessarily complete before the end of the quarter). Your In-progress and In-testing columns should be empty (you are not doing more work currently) but your TODO column should have a full sprint plan in it as you have done before. This should include any known bugs (there should be some) or new features you would like to add. These should appear as issues/cards on your Project board.
- > * Make sure your README file and Project board are up-to-date reflecting the current status of your project (e.g. any changes that you have made during the project such as changes to your class diagram). Previous versions should still be visible through your commit history. 
+
+# Final Project Update
+
+ ### Final Class Diagram
+ ![FinalUMLDiagram](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/146981459/8c1dcf7b-5803-4ccd-843c-a7951699ea54)
+ <br> This final UML includes everything we have implemented up to this point in our project.
+ <br> With the planned sprint and the features that come with it, this UML is subject to change.
+ <br>
+ ### Project Status
+ We completed most of what we originally planned for the project, but some features ended up out of scope. The login takes username and password, the player can play a game of chess in the console, all inputs are correctly validated, and the move history is shown to both players after the game. However, being able to undo moves ended up out of scope during our allotted time. We included several customization and accessibility issues we want to address in the future planned sprint. We are aware the game may have bugs or possible leaks, and those would be caught and addressed given the opportunity to continue development.
  
  ## Screenshots
-![image](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/57105334/dcaa3512-7a32-499a-a270-b22feca65bd9)
-![image](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/57105334/6e523c81-4cf8-4430-8071-4aaa499e891a)
-![image](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/57105334/5f123ca5-3a2c-42e4-9a34-df2d125084ef)
+![image](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/57105334/344595b1-5d71-4859-b8f3-2cee791f11bb)
+![image](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/57105334/d49f27a5-d835-4acb-aa2b-9ed49bc86f59)
+![image](https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/57105334/554ced92-4f7c-4eed-b695-ae0be570de2b)
+<br>
+<img width="346" alt="image" src="https://github.com/cs100/final-project-mdeg011-skark010-daisp002-mmiha004/assets/57105334/bd5d7560-7d49-446c-95e4-2cdc51e73956">
 
  ## Installation/Usage
  ### Installation
@@ -76,7 +81,7 @@ Key Features:
  <br> Git clone this repository onto your desired code editor.  
   After this, you should have everything installed to run our chess game. 
  ### Running
- To run our chess game, run:
+ To run our chess game, be sure you are in the final-project directory and run:
  <br> cmake .
  <br> make
  <br> ./playChess

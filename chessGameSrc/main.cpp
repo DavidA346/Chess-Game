@@ -17,22 +17,24 @@ string getIntof(string enteredMove) {
   int coordY = x - 'a';
 
   // Convert the y from number (1 through 8) to y-coordinate (7 through 0)
-  // Since 'rank' is a char, subtract '0' to convert it to int before
+  // Since 'y' is a char, subtract '0' to convert it to int before
   // calculation
+
   int coordX = 8 - (y - '0');
 
   // Convert the coordinates to string format
-  if (coordX <= -1 || coordX >= 7) {
+ if (coordX < 0 || coordX >= 8) {
     return "Invalid";
-  }
-  if (coordY <= -1 || coordY >= 7) {
+}
+if (coordY < 0 || coordY >= 8) {
     return "Invalid";
-  }
+}
 
   string coordinates = to_string(coordX) + to_string(coordY);
-  cout << "Coordinate passed is " << coordinates << endl;
+  // cout << "Coordinate passed is " << coordinates << endl;
 
   return coordinates;
+
 }
 
 void playGame() {
@@ -46,8 +48,9 @@ void playGame() {
   int userMove2;
   game1.startGame();
 
+  
+
   userMoveCounter = 1;
-  // cout << "Move coutnter fuck bitch " << userMoveCounter;
   while (gameStatus::IN_PROGRESS == game1.getGameStatus()) {
     {
       if (userMoveCounter % 2 == 1) {
@@ -72,13 +75,13 @@ void playGame() {
         }
 
         // cout << sourcePiece1;
-        cout << "Source piece is " << sourcePiece1 << endl;
+        // cout << "Source piece is " << sourcePiece1 << endl;
         
         userPiece1 = int(sourcePiece1[0]) - '0';
         userPiece2 = int(sourcePiece1[1]) - '0';
 
-        cout << "Piese 1 x: " << userPiece1 << endl;
-        cout << "Piese 1 y: " <<userPiece2 << endl; 
+        // cout << "Piese 1 x: " << userPiece1 << endl;
+        // cout << "Piese 1 y: " <<userPiece2 << endl; 
 
         isValidInput = false;
 
@@ -99,13 +102,13 @@ void playGame() {
           }
         }
 
-        cout << "Target piece is " << targetPiece1 << endl;
+        // cout << "Target piece is " << targetPiece1 << endl;
       
 
         userMove1 = int(targetPiece1[0]) - '0';
         userMove2 = int(targetPiece1[1]) - '0';
-        cout << "Piese 2 x: " << userMove1 << endl;
-        cout << "Piese 2 y: " << userMove2 << endl;
+        // cout << "Piese 2 x: " << userMove1 << endl;
+        // cout << "Piese 2 y: " << userMove2 << endl;
 
         game1.makeMove(userPiece1, userPiece2, userMove1, userMove2, true);
 
@@ -115,6 +118,11 @@ void playGame() {
         if (game1.moveSucess()) {
           cout << "Wonderful! Now player 2. " << endl;
           userMoveCounter++;
+        }
+        else {
+          cout << "Move wasn't valid, please enter your move again! " << endl;
+          cout << endl; 
+          cout << endl;
         }
       }
 
@@ -177,6 +185,9 @@ void playGame() {
         if (game1.moveSucess()) {
           cout << "Awesome! Now player 1. " << endl;
           userMoveCounter++;
+        }
+        else {
+          cout << "Move wasn't valid, please enter your move again! " << endl;
         }
       }
     }
@@ -310,13 +321,7 @@ int main() {
                  << ". Write it down if you need." << endl;
           }
         }
-
-        // Test
-        for (auto itr = userProfiles.begin(); itr != userProfiles.end();
-             ++itr) {
-          cout << "Username: " << itr->first << " Password: " << itr->second
-               << endl;
-        }
+        
         usernameValid = false;  // Reset to validate future usernames
         passwordValid = false;
       }
@@ -325,7 +330,7 @@ int main() {
         cout << "You entered option 3." << endl;
 
         while (user1Valid == false) {
-          cout << "Player 1, Enter an existing username ";
+          cout << "Player 1, Enter an existing username: ";
           cin >> player1Username;
           cin.ignore(256, '\n');
           
@@ -342,14 +347,14 @@ int main() {
         }
 
         while (user2Valid == false) {
-          cout << "Player 2, Enter an existing username and password ";
+          cout << "Player 2, Enter an existing username: ";
           cin >> player2Username;
           cin.ignore(256, '\n');
           
             cout << "Player 2, Enter the password for the username: ";
             cin >> player2Password;
             cin.ignore(256, '\n');
-            if (userProfiles[player2Username] == player2Password) {
+            if (userProfiles[player2Username] == player2Password && player2Username != player1Username) {
               user2Valid = true;
             } else {
               cout << "Invalid username or password! Try again." << endl;

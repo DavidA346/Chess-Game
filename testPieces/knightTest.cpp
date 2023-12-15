@@ -60,16 +60,18 @@ TEST(KnightTests, testConstructorNone)
 //     EXPECT_TRUE(board->getSquare(5, 5).getPiece().canMoveTo(5, 5, 7, 6, *board) == true);
 // }
 
-TEST(KnightTests, testCanMoveWithPieceInTheWay)
-{
-    unique_ptr<Piece> knightWhite = make_unique<Knight>(Color::White);
-    unique_ptr<Piece> knightWhite2 = make_unique<Knight>(Color::White);
-    chessBoard* board = new chessBoard();
-    board->getSquare(7, 6).setPiece(move(knightWhite));
-    board->getSquare(5, 7).setPiece(move(knightWhite2));
+//Handeled by upper class 
 
-    EXPECT_EQ(board->getSquare(7, 6).getPiece().canMoveTo(7, 6, 5, 7, *board), false);
-}
+// TEST(KnightTests, testCanMoveWithPieceInTheWay)
+// {
+//     unique_ptr<Piece> knightWhite = make_unique<Knight>(Color::White);
+//     unique_ptr<Piece> knightWhite2 = make_unique<Knight>(Color::White);
+//     chessBoard* board = new chessBoard();
+//     board->getSquare(7, 6).setPiece(move(knightWhite));
+//     board->getSquare(5, 7).setPiece(move(knightWhite2));
+
+//     EXPECT_EQ(board->getSquare(7, 6).getPiece().canMoveTo(7, 6, 5, 7, *board), false);
+// }
 
 //getSymbol Tests
 TEST(KnightTests, testGetSymbolWhite)

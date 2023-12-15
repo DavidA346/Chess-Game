@@ -16,12 +16,8 @@ bool King::canMoveTo(int sourceX, int sourceY, int targetX, int targetY, const c
     bool isOneSquareMove = (deltaX <= 1 && deltaY <= 1);
 
     // Check that the move is a one-square move and not to the same square it's already on
-    if (isOneSquareMove && (deltaX != 0 || deltaY != 0)) {
-        // check the target square is not occupied by a piece of the same color
-        Piece* targetPiece = &board.getSquare(targetX, targetY).getPiece();
-        if (targetPiece == nullptr || targetPiece->getColor() != this->getColor()) {
-            return true; // move is valid
-        }
+    if (isOneSquareMove){
+        return true;
     }
 
     // If not a one-square move, it's invalid
@@ -64,53 +60,4 @@ One function for move as of the empty board on the given square.
 //Need to check if the move requested is in willGetCheckedMethod() if yes return invalid move. 
 //Check if their path to destination square in unobstructed if yes return invalid move.
 //return true. 
-
-
-
-/*
-isKingChecked()
-//this function will set the flag of checkMate if it detects no more possible moves. 
 */
-
-/*
-willRemoveCheck()
-
-*/
-
-/*
-willGetCheckedMethod()
-
-*/
-
-
-/*
-Guideslines for pieces expect pawn and king
-1)Ensure that your own king is not in check as a result of the move (bool willGetChecked).
-2)Ensure that our king is not in check, if it is check that if that current move will defend the king through valid move
-  and remove check otherwise invalid the move. 
-2)If the move entered is a valid move aka the piece as if the piece was in an empty board.
-3)Ensure that their path to the destination square is unobstructed
-*/
-
-
-/* 
-Kings Valid move
-- one front and one back 
-- one left and right
-- one left diagonal and one back
-- one right diagonal and back 
-
-
-Queens Valid move 
-- front and back 
-- left and right
-- left diagonal and back
-- right diagonal and back 
-
-Bishop 
-- left diagonal and back
-- right diagonal and back 
-
-*/
-
-

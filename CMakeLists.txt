@@ -47,6 +47,7 @@ ADD_EXECUTABLE(runChessGameTest
     #Add test file from testChessGame here to test
     testChessGame/squareTest.cpp
     testChessGame/chessBoardTest.cpp
+    testChessGame/chessGameTest.cpp
 
     #Don't change this 
     piecesSrc/bishop.cpp

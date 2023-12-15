@@ -4,7 +4,7 @@ Bishop::~Bishop(){
 }
 
 Bishop::Bishop(Color col){
-    color = col;
+    color = col;  
 }
 
 bool Bishop::canMoveTo(int sourceX, int sourceY, int targetX, int targetY, const chessBoard& board) const{
@@ -30,13 +30,6 @@ bool Bishop::canMoveTo(int sourceX, int sourceY, int targetX, int targetY, const
         }
         x += deltaX;
         y += deltaY;
-    }
-
-    //Check if the target is not the same color
-    Piece* targetPiece = &board.getSquare(targetX, targetY).getPiece();
-
-    if (targetPiece != nullptr && targetPiece->getColor() == this->getColor()) {
-        return false;
     }
 
     return true; // Path is clear, move is valid

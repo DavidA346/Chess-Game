@@ -69,17 +69,17 @@ TEST(KingTests, testCannotMoveBackwardMultipleSpaces)
 
     ASSERT_FALSE(board->getSquare(5, 4).getPiece().canMoveTo(5, 4, 7, 4, *board) == true);
 }
+//Handeled by chessGame class 
+// TEST(KingTests, testCanMoveWithPieceInTheWay)
+// {
+//     unique_ptr<Piece> kingWhite = make_unique<King>(Color::White);
+//     unique_ptr<Piece> bishopWhite = make_unique<Bishop>(Color::White);
+//     chessBoard* board = new chessBoard();
+//     board->getSquare(7, 4).setPiece(move(kingWhite));
+//     board->getSquare(7, 5).setPiece(move(bishopWhite));
 
-TEST(KingTests, testCanMoveWithPieceInTheWay)
-{
-    unique_ptr<Piece> kingWhite = make_unique<King>(Color::White);
-    unique_ptr<Piece> bishopWhite = make_unique<Bishop>(Color::White);
-    chessBoard* board = new chessBoard();
-    board->getSquare(7, 4).setPiece(move(kingWhite));
-    board->getSquare(7, 5).setPiece(move(bishopWhite));
-
-    EXPECT_EQ(board->getSquare(7, 4).getPiece().canMoveTo(7, 4, 7, 5, *board), false);
-}
+//     EXPECT_EQ(board->getSquare(7, 4).getPiece().canMoveTo(7, 4, 7, 5, *board), false);
+// }
 
 //getSymbol Tests
 TEST(KingTests, testGetSymbolWhite)

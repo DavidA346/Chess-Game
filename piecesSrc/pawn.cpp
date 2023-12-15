@@ -33,6 +33,12 @@ bool Pawn::canMoveTo(int sourceX, int sourceY, int targetX, int targetY, const c
             return true;
         }
     }
+     if (targetX == sourceX + direction && (targetY == sourceY + 1 || targetY == sourceY - 1)) {
+        if(!board.getSquare(targetX, targetX).isEmpty()){
+            return true; 
+        }
+     }
+        
 
     return false; //Pawn cannot move
 }

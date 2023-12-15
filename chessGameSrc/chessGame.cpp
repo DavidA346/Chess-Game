@@ -6,11 +6,6 @@
 
     #include <stdio.h>
 
-    //     private:
-    //     std::unique_ptr<chessBoard> board;
-    //     std::pair<int, int> whiteKingPosition;
-    //     std::pair<int, int> blackKingPosition;
-    //     vector<string> moves;
 
     chessGame::chessGame(): board(std::make_unique < chessBoard > ()) {
 
@@ -22,119 +17,264 @@
 
     }
 
-    //     void startGame();
     void chessGame::startGame() {
       board.get() -> setupBoard();
       board.get()->displayBoard();
     }
 
-    //     void makeMove(int sourceX, int sourceY, int targetX, int targetY);
 
     void chessGame::makeMove(int sourceX, int sourceY, int targetX, int targetY, bool white) {
 
       //Check coordinates in bound
-
-      //Declare the pointers
+      if (sourceX < 0 || sourceX > 7 || sourceY < 0 || sourceY > 7 ||
+        targetX < 0 || targetX > 7 || targetY < 0 || targetY > 7) {
+        lastMove =false; 
+        return;
+    }
+      
+      //The two pieces that we are dealing with
       Piece * sourcePiece;
       Piece * targetPiece;
 
+      
+      Square* sourceSquare = &board.get()->getSquare(sourceX, sourceY);
+
       //Checking if the source is empty
-      sourcePiece = &board.get()->getSquare(sourceX, sourceY).getPiece();
-      lastMove = true;
-      board.get()->movePiece(sourceX, sourceY,  targetX,  targetY);
-
-      // First, check if the square pointer is not null
-      // if (square == nullptr) {
-      //     cout << "Invalid square coordinates. Please check your input." << endl;
-      //     lastMove = false;
-      //     return;
-      // }
-  
-      // // Then check if the square is empty
-      // if (square->isEmpty()) {
-      //     cout << "There is no piece to make a move. Please check your board." << endl;
-      //     lastMove = false;
-      //     return;
-      // } else {
-      //     sourcePiece = square->getPiece();
-      // }
-/*
-
-      if(board.get() -> getSquare(sourceX, sourceY)->isEmpty()) {
-          cout << "There is no piece to make a move. Please check your board." << endl;
-          lastMove = false;
-          return;
-
-      } else {
-        sourcePiece = board.get() -> getSquare(sourceX, sourceY)->getPiece();
+      if(sourceSquare->isEmpty()){
+        cout << "There is no piece on the source square! ";
+        lastMove =false; 
+        return;
       }
-      /*
-      if(board.get() -> getSquare(targetX, targetY)->isEmpty()){
-        targetPiece =nullptr;
-      }
+
+      //Checking that the player is moving it's own piece
       else{
-        targetPiece = board.get() -> getSquare(targetX, targetY) -> getPiece();
+          sourcePiece = &board.get()->getSquare(sourceX, sourceY).getPiece();
+          // char symbolSP = sourcePiece -> getSymbol()[0];
+
+          if(white){
+            if (sourcePiece->getColor() != Color::White) {
+            cout << "Please move your own piece! ";
+            lastMove = false;
+            return;
+            }
+          }
+          else {
+             if (sourcePiece->getColor() != Color::Black) {
+              cout << "Please move your own piece! ";
+              lastMove = false;
+              return;
+            }
+          }
+          }
+
+      //Checking if the target square is of same color
+
+     bool capturePiece = false;  
+      Square* targetSquare = &board.get()->getSquare(targetX, targetY);
+        if(!targetSquare->isEmpty()){
+            targetPiece = &board.get()->getSquare(targetX, targetY).getPiece();
+            if(white){
+              if(targetPiece->getColor() != Color::Black){
+                cout << "You cannot attack your own piece! ";
+                lastMove = false;
+                return;
+              }
+            }
+            else {
+              if(targetPiece->getColor() != Color::White){
+                cout << "You cannot attack your own piece, ";
+                lastMove = false; 
+                return;
+              }
+            }
+            capturePiece = true;
       }
 
-      if (targetPiece != nullptr && targetPiece -> getColor() == sourcePiece -> getColor()) {
-        cout << "Can't capture piece of the same color. Please refer to rules" << endl;
+       
+
+      bool validMove = sourcePiece->canMoveTo(sourceX,sourceY, targetX, targetY, *board);
+
+      if(!validMove){
+        cout << "Your piece " << sourcePiece->getSymbol() << " cannot move there. ";
         lastMove = false;
         return;
       }
 
-      // check turn 
-      char symbol = sourcePiece -> getSymbol()[0];
-      if (white) {
-        if (!isupper(symbol)) {
-          cout << "Please move your own piece. Thank you!";
-          lastMove = false;
-          return;
-        } else {
-          if (!islower(symbol)) {
-            cout << "Please move your own piece. Thank you!";
-            lastMove = false;
+      //Check if king is currently on check 
+      //If it is does it remove the check
+
+      if(white){
+        if(board.get()->isKingChecked(sourceX,sourceY, targetX, targetY, whiteKingPosition.first, whiteKingPosition.second)){
+          if(!board.get()->willRemoveCheck(sourceX,sourceY, targetX, targetY, whiteKingPosition.first, whiteKingPosition.second)){
+            cout << "Your piece " << sourcePiece->getSymbol() << " cannot move there because your king is in Check. ";
+            lastMove = false; 
             return;
           }
         }
       }
+      else {
+        if(board.get()->isKingChecked(sourceX,sourceY, targetX, targetY, blackKingPosition.first, blackKingPosition.second)){
+          if(!board.get()->willRemoveCheck(sourceX,sourceY, targetX, targetY, blackKingPosition.first, blackKingPosition.second)){
+            cout << "Your piece " << sourcePiece->getSymbol() << " cannot move there because your king is in Check. ";
+            lastMove = false; 
+              return;
+          }
+        }
 
-      //Test case; 
-      lastMove = true;
-      board.get()->movePiece(sourceX, sourceY,  targetX,  targetY);
-
-      if (white) {
-        //implement white king's function
-      } else {
-        //implement black king's function
       }
+
+
+        
+      //Check if the player is trying to move king
+      if(white){
+        if(whiteKingPosition.first == sourceX && whiteKingPosition.second == sourceY){
+          //King cannot move to a place where other players attack directly afterwards
+          if(board.get()->willKingGetChecked(sourceX,sourceY, targetX, targetY, whiteKingPosition.first, whiteKingPosition.second)){
+            cout << "Your piece " << sourcePiece->getSymbol() << " cannot move there because your king will get in Check. ";
+            lastMove = false; 
+            return; 
+          }
+          //Save the move
+          addMoves(targetX, targetY);
+          lastMove = true; 
+
+          //If capture then invoke capture logic 
+          if(capturePiece){
+              player1Captured.push_back(getStringOfMove(targetX, targetY));
+              board.get()->capture(sourceX, sourceY,  targetX,  targetY);
+
+              // printCapturedPieces(white);
+              updateKingPosition(Color::White, targetX, targetY);
+              this->board.get()->displayBoardFromBlackSide();
+              return;
+          }
+          //Move the piece and return 
+            board.get()->movePiece(sourceX, sourceY,  targetX,  targetY);
+            // printCapturedPieces(white);
+            printMoveHistory();
+            this->board.get()->displayBoardFromBlackSide();
+            updateKingPosition(Color::White, targetX, targetY);
+          return; 
+          }
+        }
+
+        else{
+            if(blackKingPosition.first == sourceX && blackKingPosition.second == sourceY){
+          //King cannot move to a place where other players attack directly afterwards
+          if(board.get()->willKingGetChecked(sourceX,sourceY, targetX, targetY, blackKingPosition.first, blackKingPosition.second)){
+            cout << "Your piece " << sourcePiece->getSymbol() << " cannot move there because your king will get in Check. ";
+            lastMove = false; 
+            return; 
+          }
+          //Save the move
+          addMoves(targetX, targetY);
+          lastMove = true; 
+
+          //If capture then invoke capture logic 
+          if(capturePiece){
+              player2Captured.push_back(getStringOfMove(targetX, targetY));
+              board.get()->capture(sourceX, sourceY,  targetX,  targetY);
+
+              // printCapturedPieces(white);
+              printMoveHistory();
+              updateKingPosition(Color::Black, targetX, targetY);
+              this->board.get()->displayBoard();
+              return;
+          }
+          //Move the piece and return 
+            board.get()->movePiece(sourceX, sourceY,  targetX,  targetY);
+            // printCapturedPieces(white);
+            printMoveHistory();
+            updateKingPosition(Color::Black, targetX, targetY);
+            this->board.get()->displayBoard();
+          return; 
+          }
+        }
+      
 
       if (sourcePiece -> getSymbol() == "P" || sourcePiece -> getSymbol() == "p") {
-
         if (board.get() -> EnPassantPossible(sourceX, sourceY, targetX, targetY)) {
           board.get() -> perfomEnPassant(sourceX, sourceY, targetX, targetY);
-          moves.push_back(getStringOfMove(targetX, targetY));
+          addMoves(targetX, targetY);
+          if(white){
+            player1Captured.push_back(getStringOfMove(targetX, targetY));
+          }
+          else{
+            player2Captured.push_back(getStringOfMove(targetX, targetY));
+          }
           lastMove = true;
+          addMoves(targetX, targetY);
+          printMoveHistory();
+
+          if(white){
+            this->board.get()->displayBoardFromBlackSide();
+            
+            }
+          else {
+            this->board.get()->displayBoard();
+          }
           return;
         }
+
         if (board.get() -> pawnPromotionPossible(sourceX, sourceY, targetX, targetY)) {
           board.get() -> performPawnPromotion(sourceX, sourceY, targetX, targetY);
-          moves.push_back(getStringOfMove(targetX, targetY));
           lastMove = true;
+          addMoves(targetX, targetY);
+          printMoveHistory();
+
+          if(white){
+            this->board.get()->displayBoardFromBlackSide();
+            
+            }
+          else {
+            this->board.get()->displayBoard();
+          }
           return;
         }
-
       }
 
+      if(capturePiece){
+        // board.get()->capture(sourceX, sourceY, targetX, targetY;
+        if(white){
+          player1Captured.push_back(getStringOfMove(targetX, targetY));
+        }
+        else{
+          player2Captured.push_back(getStringOfMove(targetX, targetY));
+        }
+        lastMove = true;
+        addMoves(targetX, targetY);
+        board.get()->capture(sourceX, sourceY,  targetX,  targetY);
+        printMoveHistory();
+        if(white){
+          this->board.get()->displayBoardFromBlackSide();
+          
+        }
+        else {
+          this->board.get()->displayBoard();
+        }
+      return;
+      }
+
+
+
+      lastMove = true;
+      addMoves(targetX, targetY);
+      board.get()->movePiece(sourceX, sourceY,  targetX,  targetY);
+      printMoveHistory();
+      // printCapturedPieces(white);
+        if(white){
+          this->board.get()->displayBoardFromBlackSide();
+          
+        }
+        else {
+          this->board.get()->displayBoard();
+        }
+
     }
-*/
-    }
-    //     void updateGameStatus();
 
     void chessGame::updateGameStatus(gameStatus status) {
         gameStatusNow = status;
     }
-
-    //     gameStatus getGameStatus() const;
 
     gameStatus chessGame::getGameStatus() const {
       return gameStatusNow;
